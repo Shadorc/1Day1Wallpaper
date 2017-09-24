@@ -1,0 +1,27 @@
+# Java class files
+*.class
+
+# Generated files
+bin/
+gen/
+
+# Eclipse project files
+.classpath
+.project
+.settings
+
+# Maven build files
+target/
+dependency-reduced-pom.xml
+
+# PDM files
+.eclipse-pmd
+
+# Windows thumbnail db
+Thumbs.db
+
+# Project Files
+config.properties
+history.json
+image.jpg
+1day1wallpaper.log
