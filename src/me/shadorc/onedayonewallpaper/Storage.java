@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
-import org.apache.commons.io.IOUtils;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
+
+import me.shadorc.onedayonewallpaper.utils.Utils;
 
 public class Storage {
 
@@ -35,7 +36,7 @@ public class Storage {
 				System.exit(1);
 
 			} finally {
-				IOUtils.closeQuietly(writer);
+				Utils.closeQuietly(writer);
 			}
 		}
 
@@ -54,7 +55,7 @@ public class Storage {
 			System.exit(1);
 
 		} finally {
-			IOUtils.closeQuietly(inStream);
+			Utils.closeQuietly(inStream);
 		}
 	}
 
@@ -79,7 +80,7 @@ public class Storage {
 			Config.LOGGER.error("Error while saving history.", err);
 
 		} finally {
-			IOUtils.closeQuietly(writer);
+			Utils.closeQuietly(writer);
 		}
 	}
 

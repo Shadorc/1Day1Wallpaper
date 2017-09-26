@@ -2,6 +2,8 @@ package me.shadorc.onedayonewallpaper.utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.Writer;
 import java.net.URL;
 import java.net.URLConnection;
 import java.time.LocalDateTime;
@@ -41,5 +43,25 @@ public class Utils {
 		connection.setRequestProperty("User-Agent", "Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/28.0.1500.29 Safari/537.36");
 		connection.connect();
 		ImageIO.write(ImageIO.read(connection.getInputStream()), "jpg", file);
+	}
+
+	@SuppressWarnings("PMD.EmptyCatchBlock")
+	public static void closeQuietly(Writer writer) {
+		try {
+			if(writer != null) {
+				writer.close();
+			}
+		} catch (IOException ignored) {
+		}
+	}
+
+	@SuppressWarnings("PMD.EmptyCatchBlock")
+	public static void closeQuietly(InputStream input) {
+		try {
+			if(input != null) {
+				input.close();
+			}
+		} catch (IOException ignored) {
+		}
 	}
 }
