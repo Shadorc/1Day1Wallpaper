@@ -39,7 +39,7 @@ public class WallpaperManager {
 		Utils.downloadAndSaveImage(wallpaper.getImageUrl(), Storage.IMAGE_FILE);
 		Storage.addToHistory(wallpaper.getId());
 
-		StatusUpdate status = new StatusUpdate("https://whvn.cc/" + wallpaper.getId() + "\nResolution : " + wallpaper.getResolution().toString());
+		StatusUpdate status = new StatusUpdate(wallpaper.getShortLink() + "\nResolution : " + wallpaper.getResolution().toString());
 		status.setMedia(Storage.IMAGE_FILE);
 
 		Config.LOGGER.info("Posting tweet...");
