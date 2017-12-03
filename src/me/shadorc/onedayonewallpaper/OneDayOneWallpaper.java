@@ -3,12 +3,15 @@ package me.shadorc.onedayonewallpaper;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 import me.shadorc.onedayonewallpaper.utils.TwitterUtils;
 import me.shadorc.onedayonewallpaper.utils.Utils;
 
 public class OneDayOneWallpaper {
+
+	protected static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
 
 	public static void main(String[] args) {
 		Config.LOGGER.info("Connection to Twitter...");
@@ -22,7 +25,7 @@ public class OneDayOneWallpaper {
 					WallpaperManager.post();
 				} catch (IOException err) {
 					Config.LOGGER.error("Something went wrong while posting image, retrying in 1 minute.", err);
-					Executors.newSingleThreadScheduledExecutor().schedule(this, TimeUnit.MINUTES.toMillis(1), TimeUnit.MILLISECONDS);
+					EXECUTOR.schedule(this, TimeUnit.MINUTES.toMillis(1), TimeUnit.MILLISECONDS);
 				}
 			}
 		};
@@ -32,7 +35,6 @@ public class OneDayOneWallpaper {
 			postingThread.run();
 		}
 
-		Executors.newSingleThreadScheduledExecutor()
-				.scheduleAtFixedRate(postingThread, Utils.getDelayBeforeNextPost(), TimeUnit.DAYS.toMillis(1), TimeUnit.MILLISECONDS);
+		EXECUTOR.scheduleAtFixedRate(postingThread, Utils.getDelayBeforeNextPost(), TimeUnit.DAYS.toMillis(1), TimeUnit.MILLISECONDS);
 	}
 }

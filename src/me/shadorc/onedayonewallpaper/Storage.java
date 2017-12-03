@@ -1,17 +1,14 @@
 package me.shadorc.onedayonewallpaper;
 
 import java.io.File;
-import java.io.FileInputStream;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Properties;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONTokener;
-
-import me.shadorc.onedayonewallpaper.utils.Utils;
 
 public class Storage {
 
@@ -24,19 +21,12 @@ public class Storage {
 
 	static {
 		if(!HISTORY_FILE.exists()) {
-			FileWriter writer = null;
-			try {
+			try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
 				HISTORY_FILE.createNewFile();
-				writer = new FileWriter(HISTORY_FILE);
 				writer.write(new JSONArray().toString());
-				writer.flush();
-
 			} catch (IOException e) {
-				Config.LOGGER.error("An error occured during the initialization of the data file. Exiting.", e);
+				Config.LOGGER.error("An error occurred during the initialisation of the data file. Exiting.", e);
 				System.exit(1);
-
-			} finally {
-				Utils.closeQuietly(writer);
 			}
 		}
 
@@ -45,17 +35,11 @@ public class Storage {
 			System.exit(1);
 		}
 
-		InputStream inStream = null;
-		try {
-			inStream = new FileInputStream(CONF_FILE);
-			PROPERTIES.load(inStream);
-
+		try (FileReader reader = new FileReader(CONF_FILE)) {
+			PROPERTIES.load(reader);
 		} catch (IOException err) {
-			Config.LOGGER.error("An error occured while getting API Keys. Exiting.", err);
+			Config.LOGGER.error("An error occurred while getting API Keys. Exiting.", err);
 			System.exit(1);
-
-		} finally {
-			Utils.closeQuietly(inStream);
 		}
 	}
 
@@ -67,29 +51,22 @@ public class Storage {
 	}
 
 	public static void addToHistory(long wallpaperID) {
-		FileWriter writer = null;
-		try {
-			JSONArray arrayObj = new JSONArray(new JSONTokener(HISTORY_FILE.toURI().toURL().openStream()));
-			arrayObj.put(wallpaperID);
+		JSONArray arrayObj = Storage.getHistory();
+		arrayObj.put(wallpaperID);
 
-			writer = new FileWriter(HISTORY_FILE);
+		try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
 			writer.write(arrayObj.toString(2));
-			writer.flush();
-
 		} catch (JSONException | IOException err) {
 			Config.LOGGER.error("Error while saving history.", err);
-
-		} finally {
-			Utils.closeQuietly(writer);
 		}
 	}
 
 	public static JSONArray getHistory() {
 		JSONArray arrayObj = new JSONArray();
-		try {
-			arrayObj = new JSONArray(new JSONTokener(HISTORY_FILE.toURI().toURL().openStream()));
+		try (FileReader reader = new FileReader(HISTORY_FILE)) {
+			arrayObj = new JSONArray(new JSONTokener(reader));
 		} catch (JSONException | IOException err) {
-			Config.LOGGER.error("An error occured while getting history.", err);
+			Config.LOGGER.error("An error occurred while getting history.", err);
 		}
 		return arrayObj;
 	}

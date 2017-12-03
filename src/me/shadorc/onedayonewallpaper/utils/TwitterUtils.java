@@ -27,7 +27,7 @@ public class TwitterUtils {
 			calendar.setTime(twitter.getUserTimeline().get(0).getCreatedAt());
 			return calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
 		} catch (TwitterException e) {
-			Config.LOGGER.error("An error occured while getting last tweet.", e);
+			Config.LOGGER.error("An error occurred while getting last tweet.", e);
 			return true;
 		}
 	}
@@ -36,7 +36,7 @@ public class TwitterUtils {
 		try {
 			twitter.updateStatus(status);
 		} catch (TwitterException e) {
-			Config.LOGGER.error("An error occured while updating status.", e);
+			Config.LOGGER.error("An error occurred while updating status.", e);
 		}
 	}
 }
