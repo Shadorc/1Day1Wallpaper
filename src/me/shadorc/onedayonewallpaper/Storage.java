@@ -6,9 +6,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONTokener;
+import twitter4j.JSONArray;
+import twitter4j.JSONTokener;
 
 public class Storage {
 
@@ -25,7 +24,7 @@ public class Storage {
 				HISTORY_FILE.createNewFile();
 				writer.write(new JSONArray().toString());
 			} catch (IOException e) {
-				Config.LOGGER.error("An error occurred during the initialisation of the data file. Exiting.", e);
+				Config.LOGGER.error("An error occurred during the initialization of the data file. Exiting.", e);
 				System.exit(1);
 			}
 		}

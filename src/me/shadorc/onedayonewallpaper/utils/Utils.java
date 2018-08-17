@@ -12,9 +12,8 @@ import java.util.List;
 
 import javax.imageio.ImageIO;
 
-import org.json.JSONArray;
-
 import me.shadorc.onedayonewallpaper.Config;
+import twitter4j.JSONArray;
 
 public class Utils {
 
