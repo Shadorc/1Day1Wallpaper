@@ -56,7 +56,7 @@ public class Storage {
 
 		try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
 			writer.write(arrayObj.toString(2));
-		} catch (JSONException | IOException err) {
+		} catch (IOException err) {
 			Config.LOGGER.error("Error while saving history.", err);
 		}
 	}
@@ -65,7 +65,7 @@ public class Storage {
 		JSONArray arrayObj = new JSONArray();
 		try (FileReader reader = new FileReader(HISTORY_FILE)) {
 			arrayObj = new JSONArray(new JSONTokener(reader));
-		} catch (JSONException | IOException err) {
+		} catch (IOException err) {
 			Config.LOGGER.error("An error occurred while getting history.", err);
 		}
 		return arrayObj;
