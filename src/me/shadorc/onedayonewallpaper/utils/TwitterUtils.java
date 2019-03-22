@@ -3,8 +3,6 @@ package me.shadorc.onedayonewallpaper.utils;
 import java.util.Calendar;
 
 import me.shadorc.onedayonewallpaper.Config;
-import me.shadorc.onedayonewallpaper.Storage;
-import me.shadorc.onedayonewallpaper.Storage.APIKey;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -17,8 +15,8 @@ public class TwitterUtils {
 
 	public static void connection() {
 		twitter = TwitterFactory.getSingleton();
-		twitter.setOAuthConsumer(Storage.get(APIKey.CONSUMER_KEY), Storage.get(APIKey.CONSUMER_SECRET));
-		twitter.setOAuthAccessToken(new AccessToken(Storage.get(APIKey.ACCESS_TOKEN), Storage.get(APIKey.ACCESS_TOKEN_SECRET)));
+		twitter.setOAuthConsumer(Config.CONSUMER_KEY, Config.CONSUMER_SECRET);
+		twitter.setOAuthAccessToken(new AccessToken(Config.ACCESS_TOKEN, Config.ACCESS_TOKEN_SECRET));
 	}
 
 	public static boolean hasPostedToday() {
@@ -26,8 +24,8 @@ public class TwitterUtils {
 			Calendar calendar = Calendar.getInstance();
 			calendar.setTime(twitter.getUserTimeline().get(0).getCreatedAt());
 			return calendar.get(Calendar.DAY_OF_YEAR) == Calendar.getInstance().get(Calendar.DAY_OF_YEAR);
-		} catch (TwitterException e) {
-			Config.LOGGER.error("An error occurred while getting last tweet.", e);
+		} catch (TwitterException err) {
+			LogUtils.error("An error occurred while getting last tweet.", err);
 			return true;
 		}
 	}
@@ -35,8 +33,8 @@ public class TwitterUtils {
 	public static void tweet(StatusUpdate status) {
 		try {
 			twitter.updateStatus(status);
-		} catch (TwitterException e) {
-			Config.LOGGER.error("An error occurred while updating status.", e);
+		} catch (TwitterException err) {
+			LogUtils.error("An error occurred while updating status.", err);
 		}
 	}
 }
