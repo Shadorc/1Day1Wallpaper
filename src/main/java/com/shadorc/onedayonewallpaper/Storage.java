@@ -1,50 +1,61 @@
 package com.shadorc.onedayonewallpaper;
 
+import reactor.util.Logger;
+import reactor.util.Loggers;
+import twitter4j.JSONArray;
+import twitter4j.JSONTokener;
+
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import com.shadorc.onedayonewallpaper.utils.LogUtils;
-import twitter4j.JSONArray;
-import twitter4j.JSONTokener;
-
 public class Storage {
 
-	private static final File HISTORY_FILE = new File("history.json");
-	public static final File IMAGE_FILE = new File("image.jpg");
+    private static final Logger LOGGER = Loggers.getLogger(Storage.class);
 
-	static {
-		if(!HISTORY_FILE.exists()) {
-			try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
-				HISTORY_FILE.createNewFile();
-				writer.write(new JSONArray().toString());
-			} catch (IOException err) {
-				LogUtils.error("An error occurred during the initialization of the data file. Exiting.", err);
-				System.exit(1);
-			}
-		}
-	}
+    private static final File SAVE_DIR = new File("./saves");
+    private static final File HISTORY_FILE = new File("saves/history.json");
+    public static final File IMAGE_FILE = new File("saves/image.jpg");
 
-	public static void addToHistory(long wallpaperId) {
-		JSONArray arrayObj = Storage.getHistory();
-		arrayObj.put(wallpaperId);
+    static {
+        if (!SAVE_DIR.exists() && !SAVE_DIR.mkdir()) {
+            throw new RuntimeException(String.format("%s could not be created.", SAVE_DIR.getName()));
+        }
 
-		try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
-			writer.write(arrayObj.toString(2));
-		} catch (IOException err) {
-			LogUtils.error("An error occurred while saving history.", err);
-		}
-	}
+        if (!HISTORY_FILE.exists()) {
+            try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
+                if (!HISTORY_FILE.createNewFile()) {
+                    throw new IOException(String.format("%s could not be created.", HISTORY_FILE.getName()));
+                }
 
-	public static JSONArray getHistory() {
-		JSONArray arrayObj = new JSONArray();
-		try (FileReader reader = new FileReader(HISTORY_FILE)) {
-			arrayObj = new JSONArray(new JSONTokener(reader));
-		} catch (IOException err) {
-			LogUtils.error("An error occurred while getting history.", err);
-		}
-		return arrayObj;
-	}
+                writer.write(new JSONArray().toString());
+            } catch (final IOException err) {
+                LOGGER.error("An error occurred during the initialization of the data file. Exiting.", err);
+                System.exit(1);
+            }
+        }
+    }
+
+    public static void addToHistory(final String id) {
+        final JSONArray jsonArray = Storage.getHistory();
+        jsonArray.put(id);
+
+        try (final FileWriter writer = new FileWriter(HISTORY_FILE)) {
+            writer.write(jsonArray.toString(2));
+        } catch (final IOException err) {
+            LOGGER.error("An error occurred while saving history.", err);
+        }
+    }
+
+    public static JSONArray getHistory() {
+        JSONArray jsonArray = new JSONArray();
+        try (final FileReader reader = new FileReader(HISTORY_FILE)) {
+            jsonArray = new JSONArray(new JSONTokener(reader));
+        } catch (final IOException err) {
+            LOGGER.error("An error occurred while getting history.", err);
+        }
+        return jsonArray;
+    }
 
 }

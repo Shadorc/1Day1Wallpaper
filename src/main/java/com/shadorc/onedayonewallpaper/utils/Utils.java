@@ -1,5 +1,9 @@
 package com.shadorc.onedayonewallpaper.utils;
 
+import com.shadorc.onedayonewallpaper.Config;
+import com.shadorc.onedayonewallpaper.TwitterAPI;
+import twitter4j.JSONArray;
+
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -7,45 +11,41 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.file.Files;
 import java.time.Duration;
+import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
-
-import com.shadorc.onedayonewallpaper.Config;
-import twitter4j.JSONArray;
 
 public class Utils {
 
-	public static long getDelayBeforeNextPost() {
-		// The default posting time has passed and no tweet has been sent
-		if(Calendar.getInstance().get(Calendar.HOUR_OF_DAY) >= Config.POST_HOUR
-				&& !TwitterUtils.hasPostedToday()) {
-			return 0;
-		}
+    public static Duration getNextPost() {
+        final ZonedDateTime nowDate = ZonedDateTime.now(ZoneId.systemDefault());
 
-		final ZonedDateTime zonedNow = ZonedDateTime.now();
-		ZonedDateTime zonedNext = zonedNow.withHour(Config.POST_HOUR).withMinute(0).withSecond(0);
-		if(zonedNow.isAfter(zonedNext)) {
-			zonedNext = zonedNext.plusDays(1);
-		}
+        // The default posting time has passed and no tweet has been sent
+        if (nowDate.getHour() >= Config.POST_HOUR && !TwitterAPI.hasPostedToday()) {
+            return Duration.ZERO;
+        }
 
-		return Duration.between(ZonedDateTime.now(), zonedNext).toMillis();
-	}
+        ZonedDateTime zonedNext = ZonedDateTime.now(ZoneId.systemDefault()).withHour(Config.POST_HOUR).withMinute(0).withSecond(0);
+        if (nowDate.isAfter(zonedNext)) {
+            zonedNext = zonedNext.plusDays(1);
+        }
 
-	public static List<Long> toList(JSONArray array) {
-		final List<Long> list = new ArrayList<>();
-		for(int i = 0; i < array.length(); i++) {
-			list.add(array.getLong(i));
-		}
-		return list;
-	}
+        return Duration.between(nowDate, zonedNext);
+    }
 
-	public static void saveImage(String url, File file) throws IOException {
-		URLConnection connection = new URL(url).openConnection();
-		connection.setRequestProperty("User-Agent", Config.USER_AGENT);
-		try (InputStream in = connection.getInputStream()) {
-			Files.copy(in, file.toPath());
-		}
-	}
+    public static <T> List<T> toList(final JSONArray array, final Class<? extends T> type) {
+        final List<T> list = new ArrayList<>();
+        for (int i = 0; i < array.length(); i++) {
+            list.add(type.cast(array.get(i)));
+        }
+        return list;
+    }
+
+    public static void saveImage(final String url, final File file) throws IOException {
+        final URLConnection connection = new URL(url).openConnection();
+        try (final InputStream in = connection.getInputStream()) {
+            Files.copy(in, file.toPath());
+        }
+    }
 }

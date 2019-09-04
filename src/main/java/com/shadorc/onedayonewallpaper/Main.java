@@ -1,39 +1,29 @@
 package com.shadorc.onedayonewallpaper;
 
-import java.io.IOException;
-import java.time.Duration;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-
-import com.shadorc.onedayonewallpaper.utils.LogUtils;
-import com.shadorc.onedayonewallpaper.utils.TwitterUtils;
 import com.shadorc.onedayonewallpaper.utils.Utils;
+import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
+import reactor.util.Logger;
+import reactor.util.Loggers;
+
+import java.time.Duration;
 
 public class Main {
 
-	private static final ScheduledExecutorService EXECUTOR = Executors.newSingleThreadScheduledExecutor();
+    private static final Logger LOGGER = Loggers.getLogger("1day1wallpaper");
+    private static final WallpaperManager WALLPAPER_MANAGER = new WallpaperManager();
 
-	public static void main(String[] args) {
-		LogUtils.info("Connection to Twitter...");
-		TwitterUtils.connection();
-		LogUtils.info("Connected to Twitter.");
+    public static void main(String[] args) {
+        TwitterAPI.connect();
 
-		final Runnable postingThread = new Runnable() {
-			@Override
-			public void run() {
-				try {
-					WallpaperManager.post();
-				} catch (IOException err) {
-					LogUtils.error("Something went wrong while posting image, retrying in 1 minute.", err);
-					EXECUTOR.schedule(this, Duration.ofMinutes(1).toMinutes(), TimeUnit.MINUTES);
-				}
-			}
-		};
+        final Duration delay = Utils.getNextPost();
 
-		LogUtils.info("Next post: %s", Duration.ofMillis(Utils.getDelayBeforeNextPost()));
-		EXECUTOR.scheduleAtFixedRate(postingThread, Utils.getDelayBeforeNextPost(),
-				Duration.ofDays(1).toMillis(), TimeUnit.MILLISECONDS);
-	}
+        LOGGER.info("Delay before next tweet: {}", delay);
+        Flux.interval(delay, Duration.ofDays(1))
+                .flatMap(ignored -> WALLPAPER_MANAGER.post())
+                .retryBackoff(3, Duration.ofMinutes(1))
+                .onErrorContinue((err, obj) -> Mono.fromRunnable(() -> LOGGER.error("An unknown error occurred.", err)))
+                .blockLast();
+    }
 
 }
