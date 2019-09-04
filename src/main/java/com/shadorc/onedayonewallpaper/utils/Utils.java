@@ -1,7 +1,7 @@
 package com.shadorc.onedayonewallpaper.utils;
 
-import com.shadorc.onedayonewallpaper.Config;
 import com.shadorc.onedayonewallpaper.TwitterAPI;
+import com.shadorc.onedayonewallpaper.data.Config;
 import twitter4j.JSONArray;
 
 import java.io.File;

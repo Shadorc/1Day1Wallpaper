@@ -1,4 +1,4 @@
-package com.shadorc.onedayonewallpaper;
+package com.shadorc.onedayonewallpaper.data;
 
 import java.io.BufferedReader;
 import java.io.File;

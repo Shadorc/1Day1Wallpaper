@@ -1,5 +1,7 @@
 package com.shadorc.onedayonewallpaper;
 
+import com.shadorc.onedayonewallpaper.data.Credential;
+import com.shadorc.onedayonewallpaper.data.Credentials;
 import reactor.util.Logger;
 import reactor.util.Loggers;
 import twitter4j.*;

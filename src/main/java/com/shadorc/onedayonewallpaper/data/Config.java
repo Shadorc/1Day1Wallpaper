@@ -1,4 +1,4 @@
-package com.shadorc.onedayonewallpaper;
+package com.shadorc.onedayonewallpaper.data;
 
 import reactor.util.Logger;
 import reactor.util.Loggers;

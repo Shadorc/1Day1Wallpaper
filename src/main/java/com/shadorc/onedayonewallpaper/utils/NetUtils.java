@@ -3,7 +3,7 @@ package com.shadorc.onedayonewallpaper.utils;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.shadorc.onedayonewallpaper.Config;
+import com.shadorc.onedayonewallpaper.data.Config;
 import io.netty.handler.codec.http.HttpHeaderNames;
 import io.netty.handler.codec.http.HttpHeaderValues;
 import io.netty.handler.codec.http.HttpMethod;
