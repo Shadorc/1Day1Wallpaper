@@ -1,4 +1,4 @@
-package me.shadorc.onedayonewallpaper.utils;
+package com.shadorc.onedayonewallpaper.utils;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import me.shadorc.onedayonewallpaper.Config;
+import com.shadorc.onedayonewallpaper.Config;
 import twitter4j.JSONArray;
 
 public class Utils {

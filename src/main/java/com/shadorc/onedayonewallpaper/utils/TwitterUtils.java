@@ -1,8 +1,8 @@
-package me.shadorc.onedayonewallpaper.utils;
+package com.shadorc.onedayonewallpaper.utils;
 
 import java.util.Calendar;
 
-import me.shadorc.onedayonewallpaper.Config;
+import com.shadorc.onedayonewallpaper.Config;
 import twitter4j.StatusUpdate;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;

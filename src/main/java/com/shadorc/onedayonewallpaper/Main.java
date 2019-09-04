@@ -1,4 +1,4 @@
-package me.shadorc.onedayonewallpaper;
+package com.shadorc.onedayonewallpaper;
 
 import java.io.IOException;
 import java.time.Duration;
@@ -6,9 +6,9 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import me.shadorc.onedayonewallpaper.utils.LogUtils;
-import me.shadorc.onedayonewallpaper.utils.TwitterUtils;
-import me.shadorc.onedayonewallpaper.utils.Utils;
+import com.shadorc.onedayonewallpaper.utils.LogUtils;
+import com.shadorc.onedayonewallpaper.utils.TwitterUtils;
+import com.shadorc.onedayonewallpaper.utils.Utils;
 
 public class Main {
 

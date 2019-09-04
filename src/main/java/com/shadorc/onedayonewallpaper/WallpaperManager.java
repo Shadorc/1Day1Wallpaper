@@ -1,4 +1,4 @@
-package me.shadorc.onedayonewallpaper;
+package com.shadorc.onedayonewallpaper;
 
 import java.io.IOException;
 import java.util.List;
@@ -13,9 +13,9 @@ import com.ivkos.wallhaven4j.models.wallpaper.Wallpaper;
 import com.ivkos.wallhaven4j.util.searchquery.SearchQuery;
 import com.ivkos.wallhaven4j.util.searchquery.SearchQueryBuilder;
 
-import me.shadorc.onedayonewallpaper.utils.LogUtils;
-import me.shadorc.onedayonewallpaper.utils.TwitterUtils;
-import me.shadorc.onedayonewallpaper.utils.Utils;
+import com.shadorc.onedayonewallpaper.utils.LogUtils;
+import com.shadorc.onedayonewallpaper.utils.TwitterUtils;
+import com.shadorc.onedayonewallpaper.utils.Utils;
 import twitter4j.StatusUpdate;
 
 public class WallpaperManager {

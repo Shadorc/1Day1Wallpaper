@@ -10,6 +10,9 @@ gen/
 .project
 .settings
 
+# IntelliJ project files
+.idea
+
 # Maven build files
 target/
 dependency-reduced-pom.xml
@@ -21,8 +24,9 @@ dependency-reduced-pom.xml
 Thumbs.db
 
 # Project Files
+*.log
 config.properties
+project.properties
 history.json
 image.jpg
 1day1wallpaper.log
-project.properties

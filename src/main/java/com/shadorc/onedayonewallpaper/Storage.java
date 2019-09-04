@@ -1,11 +1,11 @@
-package me.shadorc.onedayonewallpaper;
+package com.shadorc.onedayonewallpaper;
 
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-import me.shadorc.onedayonewallpaper.utils.LogUtils;
+import com.shadorc.onedayonewallpaper.utils.LogUtils;
 import twitter4j.JSONArray;
 import twitter4j.JSONTokener;
 

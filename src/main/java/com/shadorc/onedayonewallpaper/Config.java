@@ -1,4 +1,4 @@
-package me.shadorc.onedayonewallpaper;
+package com.shadorc.onedayonewallpaper;
 
 import java.io.File;
 import java.io.IOException;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.util.Properties;
 
-import me.shadorc.onedayonewallpaper.utils.LogUtils;
+import com.shadorc.onedayonewallpaper.utils.LogUtils;
 
 public class Config {
 
