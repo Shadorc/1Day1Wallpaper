@@ -40,4 +40,16 @@ public class Wallpaper {
     public String getShortUrl() {
         return this.shortUrl;
     }
+
+    @Override
+    public String toString() {
+        return "Wallpaper{" +
+                "id='" + id + '\'' +
+                ", resolution='" + resolution + '\'' +
+                ", dimensionX=" + dimensionX +
+                ", dimensionY=" + dimensionY +
+                ", path='" + path + '\'' +
+                ", shortUrl='" + shortUrl + '\'' +
+                '}';
+    }
 }

@@ -14,4 +14,10 @@ public class WallhavenResponse {
         return Collections.unmodifiableList(this.wallpapers);
     }
 
+    @Override
+    public String toString() {
+        return "WallhavenResponse{" +
+                "wallpapers=" + wallpapers +
+                '}';
+    }
 }

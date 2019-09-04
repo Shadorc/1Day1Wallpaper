@@ -2,7 +2,6 @@ package com.shadorc.onedayonewallpaper;
 
 import com.shadorc.onedayonewallpaper.utils.Utils;
 import reactor.core.publisher.Flux;
-import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
 
@@ -22,7 +21,7 @@ public class Main {
         Flux.interval(delay, Duration.ofDays(1))
                 .flatMap(ignored -> WALLPAPER_MANAGER.post())
                 .retryBackoff(3, Duration.ofMinutes(1))
-                .onErrorContinue((err, obj) -> Mono.fromRunnable(() -> LOGGER.error("An unknown error occurred.", err)))
+                .doOnError(err -> LOGGER.error("An unknown error occurred.", err))
                 .blockLast();
     }
 

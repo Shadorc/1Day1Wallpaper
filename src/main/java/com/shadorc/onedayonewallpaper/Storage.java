@@ -15,8 +15,8 @@ public class Storage {
     private static final Logger LOGGER = Loggers.getLogger(Storage.class);
 
     private static final File SAVE_DIR = new File("./saves");
-    private static final File HISTORY_FILE = new File("saves/history.json");
-    public static final File IMAGE_FILE = new File("saves/image.jpg");
+    private static final File HISTORY_FILE = new File(SAVE_DIR, "history.json");
+    public static final File IMAGE_FILE = new File(SAVE_DIR, "image.jpg");
 
     static {
         if (!SAVE_DIR.exists() && !SAVE_DIR.mkdir()) {
