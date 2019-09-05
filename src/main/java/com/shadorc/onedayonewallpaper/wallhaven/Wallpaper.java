@@ -44,12 +44,12 @@ public class Wallpaper {
     @Override
     public String toString() {
         return "Wallpaper{" +
-                "id='" + id + '\'' +
-                ", resolution='" + resolution + '\'' +
-                ", dimensionX=" + dimensionX +
-                ", dimensionY=" + dimensionY +
-                ", path='" + path + '\'' +
-                ", shortUrl='" + shortUrl + '\'' +
+                "id='" + this.id + '\'' +
+                ", resolution='" + this.resolution + '\'' +
+                ", dimensionX=" + this.dimensionX +
+                ", dimensionY=" + this.dimensionY +
+                ", path='" + this.path + '\'' +
+                ", shortUrl='" + this.shortUrl + '\'' +
                 '}';
     }
 }

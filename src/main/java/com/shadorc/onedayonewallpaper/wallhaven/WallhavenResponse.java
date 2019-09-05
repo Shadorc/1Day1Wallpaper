@@ -17,7 +17,7 @@ public class WallhavenResponse {
     @Override
     public String toString() {
         return "WallhavenResponse{" +
-                "wallpapers=" + wallpapers +
+                "wallpapers=" + this.wallpapers +
                 '}';
     }
 }

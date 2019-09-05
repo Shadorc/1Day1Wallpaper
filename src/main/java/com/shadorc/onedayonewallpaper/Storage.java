@@ -24,12 +24,13 @@ public class Storage {
         }
 
         if (!HISTORY_FILE.exists()) {
-            try (FileWriter writer = new FileWriter(HISTORY_FILE)) {
+            try {
                 if (!HISTORY_FILE.createNewFile()) {
                     throw new IOException(String.format("%s could not be created.", HISTORY_FILE.getName()));
                 }
-
-                writer.write(new JSONArray().toString());
+                try (final FileWriter writer = new FileWriter(HISTORY_FILE)) {
+                    writer.write(new JSONArray().toString());
+                }
             } catch (final IOException err) {
                 LOGGER.error("An error occurred during the initialization of the data file. Exiting.", err);
                 System.exit(1);

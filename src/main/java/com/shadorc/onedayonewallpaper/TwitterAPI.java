@@ -27,21 +27,14 @@ public class TwitterAPI {
         }
     }
 
-    public static boolean hasPostedToday() {
-        try {
-            final ResponseList<Status> timeline = twitter.getUserTimeline();
-            if (timeline.isEmpty()) {
-                return false;
-            } else {
-                final Instant lastTweetInstant = timeline.get(0).getCreatedAt().toInstant();
-                final ZonedDateTime lastTweetDate = ZonedDateTime.ofInstant(lastTweetInstant, ZoneId.systemDefault());
-                return lastTweetDate.getDayOfYear() == ZonedDateTime.now().getDayOfYear();
-            }
-
-        } catch (final TwitterException err) {
-            LOGGER.error("An error occurred while getting last tweet.", err);
-            return true;
+    public static boolean hasPostedToday() throws TwitterException {
+        final ResponseList<Status> timeline = twitter.getUserTimeline();
+        if (timeline.isEmpty()) {
+            return false;
         }
+        final Instant lastTweetInstant = timeline.get(0).getCreatedAt().toInstant();
+        final ZonedDateTime lastTweetDate = ZonedDateTime.ofInstant(lastTweetInstant, ZoneId.systemDefault());
+        return lastTweetDate.getDayOfYear() == ZonedDateTime.now().getDayOfYear();
     }
 
     public static Status tweet(final StatusUpdate statusUpdate) throws TwitterException {

@@ -18,8 +18,8 @@ public class Credentials {
 
         try (final BufferedReader reader = Files.newBufferedReader(CREDENTIALS_FILE.toPath())) {
             CREDENTIALS_PROPERTIES.load(reader);
-        } catch (final IOException e) {
-            throw new RuntimeException(String.format("An error occurred while loading %s file.", CREDENTIALS_FILE.getName()));
+        } catch (final IOException err) {
+            throw new RuntimeException(String.format("An error occurred while loading %s file.", CREDENTIALS_FILE.getName()), err);
         }
     }
 

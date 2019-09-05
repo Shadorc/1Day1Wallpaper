@@ -42,7 +42,7 @@ public class WallpaperManager {
             return false;
         }
 
-        float ratio = (float) wallpaper.getDimensionX() / wallpaper.getDimensionY();
+        final float ratio = (float) wallpaper.getDimensionX() / wallpaper.getDimensionY();
         return ratio >= 1.6 && ratio <= 1.8;
     }
 

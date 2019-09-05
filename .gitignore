@@ -24,7 +24,6 @@ dependency-reduced-pom.xml
 Thumbs.db
 
 # Project Files
-*.log
+logs/
+saves/
 credentials.properties
-history.json
-image.jpg
