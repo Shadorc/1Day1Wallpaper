@@ -38,12 +38,9 @@ public class WallpaperManager {
 
     private boolean isWallpaperValid(final Wallpaper wallpaper) {
         // TODO: Cache history
-        if (Utils.toList(Storage.getHistory(), String.class).contains(wallpaper.getId())) {
-            return false;
-        }
-
-        final float ratio = (float) wallpaper.getDimensionX() / wallpaper.getDimensionY();
-        return ratio >= 1.6 && ratio <= 1.8;
+        return wallpaper.getFileSize() < 5_000_000 // 5Mb is the Twitter API limit for images
+                && !Utils.toList(Storage.getHistory(), String.class).contains(wallpaper.getId())
+                && wallpaper.getRatio() >= 1.6
+                && wallpaper.getRatio() <= 1.8;
     }
-
 }

@@ -8,48 +8,48 @@ public class Wallpaper {
     private String id;
     @JsonProperty("resolution")
     private String resolution;
-    @JsonProperty("dimension_x")
-    private int dimensionX;
-    @JsonProperty("dimension_y")
-    private int dimensionY;
     @JsonProperty("path")
     private String path;
     @JsonProperty("short_url")
     private String shortUrl;
+    @JsonProperty("file_size")
+    private int fileSize;
+    @JsonProperty("ratio")
+    private float ratio;
 
     public String getId() {
-        return this.id;
+        return id;
     }
 
     public String getResolution() {
-        return this.resolution;
-    }
-
-    public int getDimensionX() {
-        return this.dimensionX;
-    }
-
-    public int getDimensionY() {
-        return this.dimensionY;
+        return resolution;
     }
 
     public String getPath() {
-        return this.path;
+        return path;
     }
 
     public String getShortUrl() {
-        return this.shortUrl;
+        return shortUrl;
+    }
+
+    public int getFileSize() {
+        return fileSize;
+    }
+
+    public float getRatio() {
+        return ratio;
     }
 
     @Override
     public String toString() {
         return "Wallpaper{" +
-                "id='" + this.id + '\'' +
-                ", resolution='" + this.resolution + '\'' +
-                ", dimensionX=" + this.dimensionX +
-                ", dimensionY=" + this.dimensionY +
-                ", path='" + this.path + '\'' +
-                ", shortUrl='" + this.shortUrl + '\'' +
+                "id='" + id + '\'' +
+                ", resolution='" + resolution + '\'' +
+                ", path='" + path + '\'' +
+                ", shortUrl='" + shortUrl + '\'' +
+                ", fileSize=" + fileSize +
+                ", ratio=" + ratio +
                 '}';
     }
 }
