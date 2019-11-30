@@ -18,38 +18,38 @@ public class Wallpaper {
     private float ratio;
 
     public String getId() {
-        return id;
+        return this.id;
     }
 
     public String getResolution() {
-        return resolution;
+        return this.resolution;
     }
 
     public String getPath() {
-        return path;
+        return this.path;
     }
 
     public String getShortUrl() {
-        return shortUrl;
+        return this.shortUrl;
     }
 
     public int getFileSize() {
-        return fileSize;
+        return this.fileSize;
     }
 
     public float getRatio() {
-        return ratio;
+        return this.ratio;
     }
 
     @Override
     public String toString() {
         return "Wallpaper{" +
-                "id='" + id + '\'' +
-                ", resolution='" + resolution + '\'' +
-                ", path='" + path + '\'' +
-                ", shortUrl='" + shortUrl + '\'' +
-                ", fileSize=" + fileSize +
-                ", ratio=" + ratio +
+                "id='" + this.id + '\'' +
+                ", resolution='" + this.resolution + '\'' +
+                ", path='" + this.path + '\'' +
+                ", shortUrl='" + this.shortUrl + '\'' +
+                ", fileSize=" + this.fileSize +
+                ", ratio=" + this.ratio +
                 '}';
     }
 }

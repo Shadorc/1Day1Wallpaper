@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
-public class Credentials {
+public final class Credentials {
 
     private static final Properties CREDENTIALS_PROPERTIES = new Properties();
     private static final File CREDENTIALS_FILE = new File("credentials.properties");

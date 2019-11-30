@@ -18,7 +18,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Utils {
+public final class Utils {
 
     public static Duration getNextPost() throws TwitterException {
         final ZonedDateTime nowDate = ZonedDateTime.now(ZoneId.systemDefault());

@@ -8,7 +8,7 @@ import reactor.util.Loggers;
 
 import java.time.Duration;
 
-public class Main {
+public final class Main {
 
     private static final Logger LOGGER = Loggers.getLogger("1day1wallpaper");
     private static final WallpaperManager WALLPAPER_MANAGER = new WallpaperManager();
