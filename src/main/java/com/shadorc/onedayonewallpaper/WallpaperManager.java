@@ -15,7 +15,11 @@ import java.util.concurrent.ThreadLocalRandom;
 public class WallpaperManager {
 
     private static final Logger LOGGER = Loggers.getLogger(WallpaperManager.class);
-    private static final String URL = "https://wallhaven.cc/api/v1/search?sorting=toplist&purity=100&atleast=1920x1080&q=-car-woman-women";
+    private static final String URL = "https://wallhaven.cc/api/v1/search?" +
+            "sorting=toplist" +
+            "&purity=100" +
+            "&atleast=1920x1080" +
+            "&q=-car-woman-women-pornstar";
 
     public Mono<Status> post() {
         LOGGER.info("Getting random wallpaper... ");
