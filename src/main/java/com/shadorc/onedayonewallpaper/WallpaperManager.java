@@ -19,7 +19,7 @@ public class WallpaperManager {
             "sorting=toplist" +
             "&purity=100" +
             "&atleast=1920x1080" +
-            "&q=-car-woman-women-pornstar";
+            "&q=-car-woman-women-pornstar-brunette-blonde";
 
     public Mono<Status> post() {
         LOGGER.info("Getting random wallpaper... ");
