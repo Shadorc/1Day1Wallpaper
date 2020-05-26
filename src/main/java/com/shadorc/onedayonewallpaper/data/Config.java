@@ -12,20 +12,22 @@ public final class Config {
 
     private static final Logger LOGGER = Loggers.getLogger(Config.class);
 
-    private static final Properties PROPERTIES = Config.getProperties();
+    private static final Properties PROPERTIES = Config.loadProperties();
 
     public static final int POST_HOUR = Integer.parseInt(PROPERTIES.getProperty("post.hour"));
     public static final Duration DEFAULT_TIMEOUT = Duration.ofMillis(Long.parseLong(PROPERTIES.getProperty("default.timeout")));
 
-    private static Properties getProperties() {
+    private static Properties loadProperties() {
         final Properties properties = new Properties();
-        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader().getResourceAsStream("project.properties")) {
-            if (inputStream != null) {
-                properties.load(inputStream);
+        try (final InputStream inputStream = Thread.currentThread().getContextClassLoader()
+                .getResourceAsStream("project.properties")) {
+            if (inputStream == null) {
+                throw new RuntimeException("Configuration file not found. Exiting.");
             }
+            properties.load(inputStream);
         } catch (final IOException err) {
             LOGGER.error("An error occurred while loading configuration file. Exiting.", err);
-            System.exit(1);
+            throw new RuntimeException(err);
         }
         return properties;
     }

@@ -1,9 +1,10 @@
 package com.shadorc.onedayonewallpaper;
 
+import com.shadorc.onedayonewallpaper.api.TwitterAPI;
+import com.shadorc.onedayonewallpaper.api.wallhaven.WallhavenResponse;
+import com.shadorc.onedayonewallpaper.api.wallhaven.Wallpaper;
 import com.shadorc.onedayonewallpaper.utils.NetUtils;
 import com.shadorc.onedayonewallpaper.utils.Utils;
-import com.shadorc.onedayonewallpaper.wallhaven.WallhavenResponse;
-import com.shadorc.onedayonewallpaper.wallhaven.Wallpaper;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
@@ -21,6 +22,9 @@ public class WallpaperManager {
             "&atleast=1920x1080" +
             "&q=-car-woman-women-pornstar-brunette-blonde";
 
+    // Twitter image size restriction: https://developer.twitter.com/en/docs/media/upload-media/overview
+    private static final int FILE_SIZE_LIMIT = 5 * 1024 * 1024;
+
     public Mono<Status> post() {
         LOGGER.info("Getting random wallpaper... ");
 
@@ -30,20 +34,20 @@ public class WallpaperManager {
                 .collectList()
                 .map(list -> list.get(ThreadLocalRandom.current().nextInt(list.size())))
                 .flatMap(wallpaper -> Mono.fromCallable(() -> {
-                    Utils.saveImage(wallpaper.getPath(), Storage.IMAGE_FILE);
-                    Storage.addToHistory(wallpaper.getId());
+                    Utils.saveImage(wallpaper.getPath(), Storage.getInstance().getImageFile());
+                    Storage.getInstance().addToHistory(wallpaper.getId());
 
-                    final StatusUpdate statusUpdate = new StatusUpdate(wallpaper.getShortUrl() + "\nResolution : " + wallpaper.getResolution());
-                    statusUpdate.setMedia(Storage.IMAGE_FILE);
+                    final StatusUpdate statusUpdate =
+                            new StatusUpdate(wallpaper.getShortUrl() + "\nResolution : " + wallpaper.getResolution());
+                    statusUpdate.setMedia(Storage.getInstance().getImageFile());
                     return statusUpdate;
                 }))
-                .flatMap(status -> Mono.fromCallable(() -> TwitterAPI.tweet(status)));
+                .flatMap(status -> Mono.fromCallable(() -> TwitterAPI.getInstance().tweet(status)));
     }
 
     private boolean isWallpaperValid(final Wallpaper wallpaper) {
-        // TODO: Cache history
-        return wallpaper.getFileSize() < 5_000_000 // 5Mb is the Twitter API limit for images
-                && !Utils.toList(Storage.getHistory(), String.class).contains(wallpaper.getId())
+        return wallpaper.getFileSize() < FILE_SIZE_LIMIT
+                && !Utils.toList(Storage.getInstance().getHistory(), String.class).contains(wallpaper.getId())
                 && wallpaper.getRatio() >= 1.6
                 && wallpaper.getRatio() <= 1.8;
     }

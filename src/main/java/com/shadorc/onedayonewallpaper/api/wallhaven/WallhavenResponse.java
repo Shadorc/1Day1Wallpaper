@@ -1,4 +1,4 @@
-package com.shadorc.onedayonewallpaper.wallhaven;
+package com.shadorc.onedayonewallpaper.api.wallhaven;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

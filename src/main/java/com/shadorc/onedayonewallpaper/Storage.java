@@ -14,21 +14,31 @@ public final class Storage {
 
     private static final Logger LOGGER = Loggers.getLogger(Storage.class);
 
-    private static final File SAVE_DIR = new File("./saves");
-    private static final File HISTORY_FILE = new File(SAVE_DIR, "history.json");
-    public static final File IMAGE_FILE = new File(SAVE_DIR, "image.jpg");
+    private static Storage instance;
 
     static {
-        if (!SAVE_DIR.exists() && !SAVE_DIR.mkdir()) {
-            throw new RuntimeException(String.format("%s could not be created.", SAVE_DIR.getName()));
+        Storage.instance = new Storage();
+    }
+
+    private final File saveDir;
+    private final File historyFile;
+    private final File imageFile;
+
+    private Storage() {
+        this.saveDir = new File("./saves");
+        this.historyFile = new File(this.saveDir, "history.json");
+        this.imageFile = new File(this.saveDir, "image.jpg");
+
+        if (!this.saveDir.exists() && !this.saveDir.mkdir()) {
+            throw new RuntimeException(String.format("%s could not be created.", this.saveDir.getName()));
         }
 
-        if (!HISTORY_FILE.exists()) {
+        if (!this.historyFile.exists()) {
             try {
-                if (!HISTORY_FILE.createNewFile()) {
-                    throw new IOException(String.format("%s could not be created.", HISTORY_FILE.getName()));
+                if (!this.historyFile.createNewFile()) {
+                    throw new IOException(String.format("%s could not be created.", this.historyFile.getName()));
                 }
-                try (final FileWriter writer = new FileWriter(HISTORY_FILE)) {
+                try (final FileWriter writer = new FileWriter(this.historyFile)) {
                     writer.write(new JSONArray().toString());
                 }
             } catch (final IOException err) {
@@ -38,25 +48,33 @@ public final class Storage {
         }
     }
 
-    public static void addToHistory(final String id) {
-        final JSONArray jsonArray = Storage.getHistory();
+    public File getImageFile() {
+        return this.imageFile;
+    }
+
+    public void addToHistory(final String id) {
+        final JSONArray jsonArray = this.getHistory();
         jsonArray.put(id);
 
-        try (final FileWriter writer = new FileWriter(HISTORY_FILE)) {
+        try (final FileWriter writer = new FileWriter(this.historyFile)) {
             writer.write(jsonArray.toString(2));
         } catch (final IOException err) {
             LOGGER.error("An error occurred while saving history.", err);
         }
     }
 
-    public static JSONArray getHistory() {
+    public JSONArray getHistory() {
         JSONArray jsonArray = new JSONArray();
-        try (final FileReader reader = new FileReader(HISTORY_FILE)) {
+        try (final FileReader reader = new FileReader(this.historyFile)) {
             jsonArray = new JSONArray(new JSONTokener(reader));
         } catch (final IOException err) {
             LOGGER.error("An error occurred while getting history.", err);
         }
         return jsonArray;
+    }
+
+    public static Storage getInstance() {
+        return Storage.instance;
     }
 
 }

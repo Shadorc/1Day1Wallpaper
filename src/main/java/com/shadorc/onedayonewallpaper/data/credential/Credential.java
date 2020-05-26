@@ -1,4 +1,4 @@
-package com.shadorc.onedayonewallpaper.data;
+package com.shadorc.onedayonewallpaper.data.credential;
 
 public enum Credential {
     CONSUMER_KEY,

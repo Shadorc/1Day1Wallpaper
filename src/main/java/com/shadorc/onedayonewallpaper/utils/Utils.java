@@ -1,6 +1,6 @@
 package com.shadorc.onedayonewallpaper.utils;
 
-import com.shadorc.onedayonewallpaper.TwitterAPI;
+import com.shadorc.onedayonewallpaper.api.TwitterAPI;
 import com.shadorc.onedayonewallpaper.data.Config;
 import twitter4j.JSONArray;
 import twitter4j.TwitterException;
@@ -24,7 +24,7 @@ public final class Utils {
         final ZonedDateTime nowDate = ZonedDateTime.now(ZoneId.systemDefault());
 
         // The wallpaper should have been posted already but it is not the case
-        if (nowDate.getHour() >= Config.POST_HOUR && !TwitterAPI.hasPostedToday()) {
+        if (nowDate.getHour() >= Config.POST_HOUR && !TwitterAPI.getInstance().hasPostedToday()) {
             return Duration.ZERO;
         }
 
