@@ -13,7 +13,9 @@ import java.time.Duration;
 public final class Main {
 
     private static final Logger LOGGER = Loggers.getLogger("1day1wallpaper");
-    private static final WallpaperManager WALLPAPER_MANAGER = new WallpaperManager();
+
+    private Main() {
+    }
 
     public static void main(final String[] args) {
         TwitterAPI.getInstance().connect();
@@ -22,7 +24,7 @@ public final class Main {
                 .doOnNext(delay -> LOGGER.info("Delay before next tweet: {}",
                         String.format("%dh %02dm %02ds", delay.toHoursPart(), delay.toMinutesPart(), delay.toSecondsPart())))
                 .flatMapMany(delay -> Flux.interval(delay, Duration.ofDays(1)))
-                .flatMap(ignored -> WALLPAPER_MANAGER.post())
+                .flatMap(ignored -> WallpaperManager.getInstance().post())
                 .doOnError(err -> LOGGER.error("An unknown error occurred. Retrying...", err))
                 .retryWhen(Retry.backoff(10, Duration.ofMinutes(1)))
                 .blockLast();

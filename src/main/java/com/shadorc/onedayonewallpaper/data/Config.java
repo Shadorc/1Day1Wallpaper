@@ -17,6 +17,9 @@ public final class Config {
     public static final int POST_HOUR = Integer.parseInt(PROPERTIES.getProperty("post.hour"));
     public static final Duration DEFAULT_TIMEOUT = Duration.ofMillis(Long.parseLong(PROPERTIES.getProperty("default.timeout")));
 
+    private Config() {
+    }
+
     private static Properties loadProperties() {
         final Properties properties = new Properties();
         try (final InputStream inputStream = Thread.currentThread().getContextClassLoader()

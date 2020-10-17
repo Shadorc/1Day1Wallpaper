@@ -20,17 +20,16 @@ public final class Storage {
         Storage.instance = new Storage();
     }
 
-    private final File saveDir;
     private final File historyFile;
     private final File imageFile;
 
     private Storage() {
-        this.saveDir = new File("./saves");
-        this.historyFile = new File(this.saveDir, "history.json");
-        this.imageFile = new File(this.saveDir, "image.jpg");
+        final File saveDir = new File("./saves");
+        this.historyFile = new File(saveDir, "history.json");
+        this.imageFile = new File(saveDir, "image.jpg");
 
-        if (!this.saveDir.exists() && !this.saveDir.mkdir()) {
-            throw new RuntimeException(String.format("%s could not be created.", this.saveDir.getName()));
+        if (!saveDir.exists() && !saveDir.mkdir()) {
+            throw new RuntimeException(String.format("%s could not be created.", saveDir.getName()));
         }
 
         if (!this.historyFile.exists()) {

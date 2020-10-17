@@ -15,21 +15,20 @@ public final class CredentialManager {
     }
 
     private final Properties credentialsProperties;
-    private final File credentialsFile;
 
     private CredentialManager() {
         this.credentialsProperties = new Properties();
-        this.credentialsFile = new File("credentials.properties");
+        File credentialsFile = new File("credentials.properties");
 
-        if (!this.credentialsFile.exists()) {
-            throw new RuntimeException(String.format("%s file is missing.", this.credentialsFile.getName()));
+        if (!credentialsFile.exists()) {
+            throw new RuntimeException(String.format("%s file is missing.", credentialsFile.getName()));
         }
 
-        try (final BufferedReader reader = Files.newBufferedReader(this.credentialsFile.toPath())) {
+        try (final BufferedReader reader = Files.newBufferedReader(credentialsFile.toPath())) {
             this.credentialsProperties.load(reader);
         } catch (final IOException err) {
             throw new RuntimeException(String.format("An error occurred while loading %s file.",
-                    this.credentialsFile.getName()), err);
+                    credentialsFile.getName()), err);
         }
     }
 
