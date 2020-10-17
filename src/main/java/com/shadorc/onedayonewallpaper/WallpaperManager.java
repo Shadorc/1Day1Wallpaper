@@ -25,7 +25,7 @@ public class WallpaperManager {
             "&q=-car-woman-women-pornstar-brunette-blonde";
 
     // Twitter image size restriction: https://developer.twitter.com/en/docs/media/upload-media/overview
-    private static final int FILE_SIZE_LIMIT = 5 * 1024 * 1024;
+    private static final int FILE_SIZE_LIMIT = 5 * 1000 * 1000;
 
     private static WallpaperManager instance;
 
