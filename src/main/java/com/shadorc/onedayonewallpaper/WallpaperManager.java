@@ -11,7 +11,9 @@ import reactor.util.Loggers;
 import twitter4j.Status;
 import twitter4j.StatusUpdate;
 
+import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.function.Predicate;
 
 public class WallpaperManager {
 
@@ -25,13 +27,20 @@ public class WallpaperManager {
     // Twitter image size restriction: https://developer.twitter.com/en/docs/media/upload-media/overview
     private static final int FILE_SIZE_LIMIT = 5 * 1024 * 1024;
 
+    private static WallpaperManager instance;
+
+    static {
+        WallpaperManager.instance = new WallpaperManager();
+    }
+
     public Mono<Status> post() {
         LOGGER.info("Getting random wallpaper... ");
 
         return NetUtils.get(URL, WallhavenResponse.class)
                 .flatMapIterable(WallhavenResponse::getWallpapers)
-                .filter(this::isWallpaperValid)
+                .filter(WallpaperManager::isWallpaperValid)
                 .collectList()
+                .filter(Predicate.not(List::isEmpty))
                 .map(list -> list.get(ThreadLocalRandom.current().nextInt(list.size())))
                 .flatMap(wallpaper -> Mono.fromCallable(() -> {
                     Utils.saveImage(wallpaper.getPath(), Storage.getInstance().getImageFile());
@@ -42,13 +51,18 @@ public class WallpaperManager {
                     statusUpdate.setMedia(Storage.getInstance().getImageFile());
                     return statusUpdate;
                 }))
-                .flatMap(status -> Mono.fromCallable(() -> TwitterAPI.getInstance().tweet(status)));
+                .flatMap(status -> Mono.fromCallable(() -> TwitterAPI.getInstance().tweet(status)))
+                .switchIfEmpty(Mono.error(new RuntimeException("No wallpaper found.")));
     }
 
-    private boolean isWallpaperValid(final Wallpaper wallpaper) {
+    private static boolean isWallpaperValid(final Wallpaper wallpaper) {
         return wallpaper.getFileSize() < FILE_SIZE_LIMIT
                 && !Utils.toList(Storage.getInstance().getHistory(), String.class).contains(wallpaper.getId())
                 && wallpaper.getRatio() >= 1.6
                 && wallpaper.getRatio() <= 1.8;
+    }
+
+    public static WallpaperManager getInstance() {
+        return WallpaperManager.instance;
     }
 }
