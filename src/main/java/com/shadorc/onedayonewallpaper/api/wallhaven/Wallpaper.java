@@ -2,6 +2,9 @@ package com.shadorc.onedayonewallpaper.api.wallhaven;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.Collections;
+import java.util.List;
+
 public class Wallpaper {
 
     @JsonProperty("id")
@@ -16,6 +19,8 @@ public class Wallpaper {
     private int fileSize;
     @JsonProperty("ratio")
     private float ratio;
+    @JsonProperty("tags")
+    private List<Tag> tags;
 
     public String getId() {
         return this.id;
@@ -39,6 +44,10 @@ public class Wallpaper {
 
     public float getRatio() {
         return this.ratio;
+    }
+
+    public List<Tag> getTags() {
+        return Collections.unmodifiableList(this.tags);
     }
 
     @Override

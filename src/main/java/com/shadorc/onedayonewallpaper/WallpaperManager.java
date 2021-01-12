@@ -21,8 +21,9 @@ public class WallpaperManager {
     private static final String URL = "https://wallhaven.cc/api/v1/search?" +
             "sorting=toplist" +
             "&purity=100" +
-            "&atleast=1920x1080" +
-            "&q=-car-woman-women-pornstar-brunette-blonde";
+            "&atleast=1920x1080";
+    private static final List<String> BLACKLISTED_TAGS = List.of("car", "woman", "women", "pornstar",
+            "brunette", "blonde");
 
     // Twitter image size restriction: https://developer.twitter.com/en/docs/media/upload-media/overview
     private static final int FILE_SIZE_LIMIT = 5 * 1000 * 1000;
@@ -59,7 +60,14 @@ public class WallpaperManager {
         return wallpaper.getFileSize() < FILE_SIZE_LIMIT
                 && !Utils.toList(Storage.getInstance().getHistory(), String.class).contains(wallpaper.getId())
                 && wallpaper.getRatio() >= 1.6
-                && wallpaper.getRatio() <= 1.8;
+                && wallpaper.getRatio() <= 1.8
+                && WallpaperManager.areTagsValid(wallpaper);
+    }
+
+    private static boolean areTagsValid(final Wallpaper wallpaper) {
+        return wallpaper.getTags()
+                .stream()
+                .allMatch(tag -> tag.getPurity().equals("sfw") && !BLACKLISTED_TAGS.contains(tag.getName()));
     }
 
     public static WallpaperManager getInstance() {
