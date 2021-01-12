@@ -26,7 +26,7 @@ public class WallpaperManager {
             "brunette", "blonde");
 
     // Twitter image size restriction: https://developer.twitter.com/en/docs/media/upload-media/overview
-    private static final int FILE_SIZE_LIMIT = 5 * 1000 * 1000;
+    private static final float FILE_SIZE_LIMIT = 4.5f * 1000 * 1000;
 
     private static WallpaperManager instance;
 
