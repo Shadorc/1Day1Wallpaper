@@ -18,10 +18,12 @@ import java.util.function.Predicate;
 public class WallpaperManager {
 
     private static final Logger LOGGER = Loggers.getLogger(WallpaperManager.class);
-    private static final String URL = "https://wallhaven.cc/api/v1/search?" +
+    private static final String API_URL = "https://wallhaven.cc/api/v1";
+    private static final String SEARCH_URL = API_URL + "/search?" +
             "sorting=toplist" +
             "&purity=100" +
             "&atleast=1920x1080";
+    private static final String WALLPAPER_URL = API_URL + "/w";
     private static final List<String> BLACKLISTED_TAGS = List.of("car", "woman", "women", "pornstar",
             "brunette", "blonde");
 
@@ -37,12 +39,16 @@ public class WallpaperManager {
     public Mono<Status> post() {
         LOGGER.info("Getting random wallpaper... ");
 
-        return NetUtils.get(URL, WallhavenResponse.class)
+        return NetUtils.get(SEARCH_URL, WallhavenResponse.class)
                 .flatMapIterable(WallhavenResponse::getWallpapers)
                 .filter(WallpaperManager::isWallpaperValid)
                 .collectList()
                 .filter(Predicate.not(List::isEmpty))
                 .map(list -> list.get(ThreadLocalRandom.current().nextInt(list.size())))
+                .flatMap(wallpaper -> NetUtils.get(WALLPAPER_URL + "/" + wallpaper.getId(), WallhavenResponse.class))
+                .flatMapIterable(WallhavenResponse::getWallpapers)
+                .filter(WallpaperManager::areTagsValid)
+                .next()
                 .flatMap(wallpaper -> Mono.fromCallable(() -> {
                     Utils.saveImage(wallpaper.getPath(), Storage.getInstance().getImageFile());
                     Storage.getInstance().addToHistory(wallpaper.getId());
@@ -60,8 +66,7 @@ public class WallpaperManager {
         return wallpaper.getFileSize() < FILE_SIZE_LIMIT
                 && !Utils.toList(Storage.getInstance().getHistory(), String.class).contains(wallpaper.getId())
                 && wallpaper.getRatio() >= 1.6
-                && wallpaper.getRatio() <= 1.8
-                && WallpaperManager.areTagsValid(wallpaper);
+                && wallpaper.getRatio() <= 1.8;
     }
 
     private static boolean areTagsValid(final Wallpaper wallpaper) {
