@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 
 public class Wallpaper {
 
@@ -46,8 +47,8 @@ public class Wallpaper {
         return this.ratio;
     }
 
-    public List<Tag> getTags() {
-        return Collections.unmodifiableList(this.tags);
+    public Optional<List<Tag>> getTags() {
+        return Optional.ofNullable(this.tags).map(Collections::unmodifiableList);
     }
 
     @Override
@@ -59,6 +60,7 @@ public class Wallpaper {
                 ", shortUrl='" + this.shortUrl + '\'' +
                 ", fileSize=" + this.fileSize +
                 ", ratio=" + this.ratio +
+                ", tags=" + this.tags +
                 '}';
     }
 }

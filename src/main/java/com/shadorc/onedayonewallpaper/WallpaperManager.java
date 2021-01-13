@@ -1,6 +1,5 @@
 package com.shadorc.onedayonewallpaper;
 
-import com.shadorc.onedayonewallpaper.api.TwitterAPI;
 import com.shadorc.onedayonewallpaper.api.wallhaven.WallhavenResponse;
 import com.shadorc.onedayonewallpaper.api.wallhaven.Wallpaper;
 import com.shadorc.onedayonewallpaper.utils.NetUtils;
@@ -8,8 +7,6 @@ import com.shadorc.onedayonewallpaper.utils.Utils;
 import reactor.core.publisher.Mono;
 import reactor.util.Logger;
 import reactor.util.Loggers;
-import twitter4j.Status;
-import twitter4j.StatusUpdate;
 
 import java.util.List;
 import java.util.concurrent.ThreadLocalRandom;
@@ -36,7 +33,7 @@ public class WallpaperManager {
         WallpaperManager.instance = new WallpaperManager();
     }
 
-    public Mono<Status> post() {
+    public Mono<Wallpaper> requestWallpaper() {
         LOGGER.info("Getting random wallpaper... ");
 
         return NetUtils.get(SEARCH_URL, WallhavenResponse.class)
@@ -49,16 +46,6 @@ public class WallpaperManager {
                 .flatMapIterable(WallhavenResponse::getWallpapers)
                 .filter(WallpaperManager::areTagsValid)
                 .next()
-                .flatMap(wallpaper -> Mono.fromCallable(() -> {
-                    Utils.saveImage(wallpaper.getPath(), Storage.getInstance().getImageFile());
-                    Storage.getInstance().addToHistory(wallpaper.getId());
-
-                    final StatusUpdate statusUpdate =
-                            new StatusUpdate(wallpaper.getShortUrl() + "\nResolution : " + wallpaper.getResolution());
-                    statusUpdate.setMedia(Storage.getInstance().getImageFile());
-                    return statusUpdate;
-                }))
-                .flatMap(status -> Mono.fromCallable(() -> TwitterAPI.getInstance().tweet(status)))
                 .switchIfEmpty(Mono.error(new RuntimeException("No wallpaper found.")));
     }
 
@@ -71,8 +58,9 @@ public class WallpaperManager {
 
     private static boolean areTagsValid(final Wallpaper wallpaper) {
         return wallpaper.getTags()
-                .stream()
-                .allMatch(tag -> tag.getPurity().equals("sfw") && !BLACKLISTED_TAGS.contains(tag.getName()));
+                .map(list -> list.stream()
+                        .allMatch(tag -> tag.getPurity().equals("sfw") && !BLACKLISTED_TAGS.contains(tag.getName())))
+                .orElse(true);
     }
 
     public static WallpaperManager getInstance() {

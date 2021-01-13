@@ -48,7 +48,7 @@ public final class NetUtils {
                             resp.method().asciiName(), resp.uri(), resp.responseHeaders().get(HttpHeaderNames.CONTENT_TYPE), err))));
         }
 
-        return body.asInputStream()
+        return body.asString()
                 .flatMap(input -> Mono.fromCallable(() -> MAPPER.readValue(input, type)));
     }
 }
