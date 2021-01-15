@@ -1,6 +1,7 @@
 package com.shadorc.onedayonewallpaper;
 
 import com.shadorc.onedayonewallpaper.api.TwitterAPI;
+import com.shadorc.onedayonewallpaper.data.Config;
 import com.shadorc.onedayonewallpaper.utils.Utils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -14,9 +15,6 @@ import java.time.Duration;
 public final class Main {
 
     private static final Logger LOGGER = Loggers.getLogger("1day1wallpaper");
-
-    private Main() {
-    }
 
     public static void main(final String[] args) {
         TwitterAPI.getInstance().connect();
@@ -37,7 +35,7 @@ public final class Main {
                 }))
                 .flatMap(status -> Mono.fromCallable(() -> TwitterAPI.getInstance().tweet(status)))
                 .doOnError(err -> LOGGER.error("An unknown error occurred. Retrying...", err))
-                .retryWhen(Retry.backoff(10, Duration.ofMinutes(1)))
+                .retryWhen(Retry.backoff(Config.RETRY_MAX, Duration.ofSeconds(30)))
                 .blockLast();
     }
 

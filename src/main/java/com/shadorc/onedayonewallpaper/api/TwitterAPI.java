@@ -23,7 +23,7 @@ public final class TwitterAPI {
 
     private Twitter twitter;
 
-    public void connect() {
+    public synchronized void connect() {
         if (this.twitter == null) {
             LOGGER.info("Connection to Twitter...");
             this.twitter = TwitterFactory.getSingleton();

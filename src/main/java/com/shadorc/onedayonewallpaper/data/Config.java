@@ -16,9 +16,7 @@ public final class Config {
 
     public static final int POST_HOUR = Integer.parseInt(PROPERTIES.getProperty("post.hour"));
     public static final Duration DEFAULT_TIMEOUT = Duration.ofMillis(Long.parseLong(PROPERTIES.getProperty("default.timeout")));
-
-    private Config() {
-    }
+    public static final int RETRY_MAX = Integer.parseInt(PROPERTIES.getProperty("retry.max"));
 
     private static Properties loadProperties() {
         final Properties properties = new Properties();

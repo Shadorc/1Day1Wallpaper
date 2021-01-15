@@ -47,6 +47,7 @@ public class Wallpaper {
         return this.ratio;
     }
 
+    // Tags are present only using the wallpaper endpoint
     public Optional<List<Tag>> getTags() {
         return Optional.ofNullable(this.tags).map(Collections::unmodifiableList);
     }

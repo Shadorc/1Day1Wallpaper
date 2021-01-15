@@ -15,6 +15,7 @@ import java.util.function.Predicate;
 public class WallpaperManager {
 
     private static final Logger LOGGER = Loggers.getLogger(WallpaperManager.class);
+
     private static final String API_URL = "https://wallhaven.cc/api/v1";
     private static final String SEARCH_URL = API_URL + "/search?" +
             "sorting=toplist" +

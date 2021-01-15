@@ -24,9 +24,6 @@ public final class NetUtils {
 
     private static final HttpClient HTTP_CLIENT = HttpClient.create();
 
-    private NetUtils() {
-    }
-
     public static <T> Mono<T> get(final String url, final Class<? extends T> type) {
         return HTTP_CLIENT
                 .request(HttpMethod.GET)
