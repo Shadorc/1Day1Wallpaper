@@ -10,7 +10,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public final class Storage {
+public class Storage {
 
     private static final Logger LOGGER = Loggers.getLogger(Storage.class);
 

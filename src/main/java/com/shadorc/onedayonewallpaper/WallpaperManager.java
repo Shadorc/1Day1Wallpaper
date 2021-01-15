@@ -60,7 +60,7 @@ public class WallpaperManager {
     private static boolean areTagsValid(final Wallpaper wallpaper) {
         return wallpaper.getTags()
                 .map(list -> list.stream()
-                        .allMatch(tag -> tag.getPurity().equals("sfw") && !BLACKLISTED_TAGS.contains(tag.getName())))
+                        .allMatch(tag -> "sfw".equals(tag.getPurity()) && !BLACKLISTED_TAGS.contains(tag.getName())))
                 .orElse(true);
     }
 

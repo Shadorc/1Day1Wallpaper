@@ -12,7 +12,7 @@ import twitter4j.StatusUpdate;
 
 import java.time.Duration;
 
-public final class Main {
+public class Main {
 
     private static final Logger LOGGER = Loggers.getLogger("1day1wallpaper");
 

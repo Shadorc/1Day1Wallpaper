@@ -11,7 +11,7 @@ import java.time.Instant;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-public final class TwitterAPI {
+public class TwitterAPI {
 
     private static final Logger LOGGER = Loggers.getLogger(TwitterAPI.class);
 

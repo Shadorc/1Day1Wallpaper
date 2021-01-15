@@ -8,7 +8,7 @@ import java.io.InputStream;
 import java.time.Duration;
 import java.util.Properties;
 
-public final class Config {
+public class Config {
 
     private static final Logger LOGGER = Loggers.getLogger(Config.class);
 

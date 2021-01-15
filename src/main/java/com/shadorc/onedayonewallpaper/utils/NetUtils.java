@@ -14,7 +14,7 @@ import reactor.netty.http.client.HttpClientResponse;
 
 import java.io.IOException;
 
-public final class NetUtils {
+public class NetUtils {
 
     private static final ObjectMapper MAPPER = new ObjectMapper()
             .disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)

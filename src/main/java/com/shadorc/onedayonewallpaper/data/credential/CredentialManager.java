@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.util.Properties;
 
-public final class CredentialManager {
+public class CredentialManager {
 
     private static CredentialManager instance;
 
@@ -18,7 +18,7 @@ public final class CredentialManager {
 
     private CredentialManager() {
         this.credentialsProperties = new Properties();
-        File credentialsFile = new File("credentials.properties");
+        final File credentialsFile = new File("credentials.properties");
 
         if (!credentialsFile.exists()) {
             throw new RuntimeException(String.format("%s file is missing.", credentialsFile.getName()));
