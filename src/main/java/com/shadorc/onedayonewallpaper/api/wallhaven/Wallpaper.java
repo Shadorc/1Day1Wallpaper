@@ -16,8 +16,6 @@ public class Wallpaper {
     private String path;
     @JsonProperty("short_url")
     private String shortUrl;
-    @JsonProperty("file_size")
-    private int fileSize;
     @JsonProperty("ratio")
     private float ratio;
     @JsonProperty("tags")
@@ -39,10 +37,6 @@ public class Wallpaper {
         return this.shortUrl;
     }
 
-    public int getFileSize() {
-        return this.fileSize;
-    }
-
     public float getRatio() {
         return this.ratio;
     }
@@ -59,7 +53,6 @@ public class Wallpaper {
                 ", resolution='" + this.resolution + '\'' +
                 ", path='" + this.path + '\'' +
                 ", shortUrl='" + this.shortUrl + '\'' +
-                ", fileSize=" + this.fileSize +
                 ", ratio=" + this.ratio +
                 ", tags=" + this.tags +
                 '}';

@@ -15,28 +15,24 @@ public class TwitterAPI {
 
     private static final Logger LOGGER = Loggers.getLogger(TwitterAPI.class);
 
-    private static TwitterAPI instance;
+    private static Twitter twitter;
 
-    static {
-        TwitterAPI.instance = new TwitterAPI();
-    }
-
-    private Twitter twitter;
-
-    public synchronized void connect() {
-        if (this.twitter == null) {
-            LOGGER.info("Connection to Twitter...");
-            this.twitter = TwitterFactory.getSingleton();
-            this.twitter.setOAuthConsumer(CredentialManager.getInstance().get(Credential.CONSUMER_KEY),
-                    CredentialManager.getInstance().get(Credential.CONSUMER_SECRET));
-            this.twitter.setOAuthAccessToken(new AccessToken(CredentialManager.getInstance().get(Credential.ACCESS_TOKEN),
-                    CredentialManager.getInstance().get(Credential.ACCESS_TOKEN_SECRET)));
-            LOGGER.info("Connected to Twitter.");
+    public static synchronized void connect() {
+        if (TwitterAPI.twitter == null) {
+            LOGGER.info("Connecting to Twitter...");
+            TwitterAPI.twitter = TwitterFactory.getSingleton();
+            TwitterAPI.twitter.setOAuthConsumer(
+                    CredentialManager.get(Credential.CONSUMER_KEY),
+                    CredentialManager.get(Credential.CONSUMER_SECRET));
+            TwitterAPI.twitter.setOAuthAccessToken(new AccessToken(
+                    CredentialManager.get(Credential.ACCESS_TOKEN),
+                    CredentialManager.get(Credential.ACCESS_TOKEN_SECRET)));
+            LOGGER.info("Connected to Twitter");
         }
     }
 
-    public boolean hasPostedToday() throws TwitterException {
-        final ResponseList<Status> timeline = this.twitter.getUserTimeline();
+    public static boolean hasPostedToday() throws TwitterException {
+        final ResponseList<Status> timeline = TwitterAPI.twitter.getUserTimeline();
         if (timeline.isEmpty()) {
             return false;
         }
@@ -45,14 +41,10 @@ public class TwitterAPI {
         return lastTweetDate.getDayOfYear() == ZonedDateTime.now().getDayOfYear();
     }
 
-    public Status tweet(final StatusUpdate statusUpdate) throws TwitterException {
+    public static Status tweet(StatusUpdate statusUpdate) throws TwitterException {
         LOGGER.info("Posting tweet...");
-        final Status status = this.twitter.updateStatus(statusUpdate);
-        LOGGER.info("Tweet posted.");
+        final Status status = TwitterAPI.twitter.updateStatus(statusUpdate);
+        LOGGER.info("Tweet posted");
         return status;
-    }
-
-    public static TwitterAPI getInstance() {
-        return TwitterAPI.instance;
     }
 }

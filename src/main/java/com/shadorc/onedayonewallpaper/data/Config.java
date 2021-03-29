@@ -23,11 +23,11 @@ public class Config {
         try (final InputStream inputStream = Thread.currentThread().getContextClassLoader()
                 .getResourceAsStream("project.properties")) {
             if (inputStream == null) {
-                throw new RuntimeException("Configuration file not found. Exiting.");
+                throw new RuntimeException("Configuration file not found, exiting");
             }
             properties.load(inputStream);
         } catch (final IOException err) {
-            LOGGER.error("An error occurred while loading configuration file. Exiting.", err);
+            LOGGER.error("An error occurred while loading configuration file, exiting", err);
             throw new RuntimeException(err);
         }
         return properties;

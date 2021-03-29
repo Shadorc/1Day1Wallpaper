@@ -24,7 +24,7 @@ public class NetUtils {
 
     private static final HttpClient HTTP_CLIENT = HttpClient.create();
 
-    public static <T> Mono<T> get(final String url, final Class<? extends T> type) {
+    public static <T> Mono<T> get(String url, Class<? extends T> type) {
         return HTTP_CLIENT
                 .request(HttpMethod.GET)
                 .uri(url)
@@ -32,7 +32,7 @@ public class NetUtils {
                 .timeout(Config.DEFAULT_TIMEOUT);
     }
 
-    private static <T> Mono<T> handleResponse(final HttpClientResponse resp, final ByteBufMono body, final Class<? extends T> type) {
+    private static <T> Mono<T> handleResponse(HttpClientResponse resp, ByteBufMono body, Class<? extends T> type) {
         final int statusCode = resp.status().code();
         if (statusCode / 100 != 2) {
             return body.asString()

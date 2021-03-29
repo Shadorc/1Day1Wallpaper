@@ -20,11 +20,13 @@ import java.util.List;
 
 public class Utils {
 
+    public static final long MB = 1_048_576;
+
     public static Duration getNextPost() throws TwitterException {
         final ZonedDateTime nowDate = ZonedDateTime.now(ZoneId.systemDefault());
 
         // The wallpaper should have been posted already but it is not the case
-        if (nowDate.getHour() >= Config.POST_HOUR && !TwitterAPI.getInstance().hasPostedToday()) {
+        if (nowDate.getHour() >= Config.POST_HOUR && !TwitterAPI.hasPostedToday()) {
             return Duration.ZERO;
         }
 
@@ -39,7 +41,7 @@ public class Utils {
         return Duration.between(nowDate, zonedNext);
     }
 
-    public static <T> List<T> toList(final JSONArray array, final Class<? extends T> type) {
+    public static <T> List<T> toList(JSONArray array, Class<? extends T> type) {
         final List<T> list = new ArrayList<>();
         for (int i = 0; i < array.length(); i++) {
             list.add(type.cast(array.get(i)));
@@ -47,10 +49,10 @@ public class Utils {
         return list;
     }
 
-    public static void saveImage(final String url, final File file) throws IOException {
+    public static long saveImage(String url, File file) throws IOException {
         final URLConnection connection = new URL(url).openConnection();
         try (final InputStream in = connection.getInputStream()) {
-            Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            return Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
     }
 }

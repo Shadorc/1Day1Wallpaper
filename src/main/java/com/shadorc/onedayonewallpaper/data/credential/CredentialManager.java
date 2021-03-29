@@ -8,36 +8,24 @@ import java.util.Properties;
 
 public class CredentialManager {
 
-    private static CredentialManager instance;
+    private static final Properties PROPERTIES = new Properties();
 
     static {
-        CredentialManager.instance = new CredentialManager();
-    }
-
-    private final Properties credentialsProperties;
-
-    private CredentialManager() {
-        this.credentialsProperties = new Properties();
         final File credentialsFile = new File("credentials.properties");
-
         if (!credentialsFile.exists()) {
-            throw new RuntimeException(String.format("%s file is missing.", credentialsFile.getName()));
+            throw new RuntimeException(String.format("%s file is missing", credentialsFile.getName()));
         }
 
         try (final BufferedReader reader = Files.newBufferedReader(credentialsFile.toPath())) {
-            this.credentialsProperties.load(reader);
+            CredentialManager.PROPERTIES.load(reader);
         } catch (final IOException err) {
-            throw new RuntimeException(String.format("An error occurred while loading %s file.",
+            throw new RuntimeException(String.format("An error occurred while loading %s file",
                     credentialsFile.getName()), err);
         }
     }
 
-    public String get(final Credential key) {
-        return this.credentialsProperties.getProperty(key.toString());
-    }
-
-    public static CredentialManager getInstance() {
-        return CredentialManager.instance;
+    public static String get(Credential key) {
+        return CredentialManager.PROPERTIES.getProperty(key.toString());
     }
 
 }
